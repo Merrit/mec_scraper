@@ -6,7 +6,6 @@ from tkinter import messagebox
 
 from src.mec_product import MECProduct
 
-
 date = str(datetime.date.today())
 
 
