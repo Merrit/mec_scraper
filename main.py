@@ -9,15 +9,21 @@ from src.mec_product import MECProduct
 
 date = str(datetime.date.today())
 
-script_dir = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+# Get file path from the same dir as the running script.
+def get_file_path(file_name) -> str:
+    script_dir = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    file_location = os.path.join(script_dir, file_name)
+    return file_location
+
+
+url_file_location = get_file_path('urls.txt')
+result_file_location = get_file_path('result.txt')
 
 
 def read_urls() -> list[str]:
     __urls: list[str] = []
-    # Get the file from the same dir as the running script.
-    # __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-    file_location = os.path.join(script_dir, 'urls.txt')
-    file = open(file_location, 'r')
+    file = open(url_file_location, 'r')
     for line in file:
         __urls.append(line.strip())
     file.close()
@@ -26,8 +32,7 @@ def read_urls() -> list[str]:
 
 def read_result() -> dict:
     try:
-        file_location = os.path.join(script_dir, 'results.txt')
-        file = open(file_location, 'r')
+        file = open(result_file_location, 'r')
     except FileNotFoundError:
         return {}
     data = json.load(file)
@@ -35,8 +40,7 @@ def read_result() -> dict:
 
 
 def save_result(data: dict):
-    file_location = os.path.join(script_dir, 'result.txt')
-    file = open(file_location, 'w')
+    file = open(result_file_location, 'w')
     json.dump(data, file)
     file.close()
 
