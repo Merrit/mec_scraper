@@ -1,5 +1,6 @@
 import datetime
 import json
+import os
 
 import tkinter
 from tkinter import messagebox
@@ -8,10 +9,15 @@ from src.mec_product import MECProduct
 
 date = str(datetime.date.today())
 
+script_dir = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
 
 def read_urls() -> list[str]:
     __urls: list[str] = []
-    file = open('urls.txt', 'r')
+    # Get the file from the same dir as the running script.
+    # __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    file_location = os.path.join(script_dir, 'urls.txt')
+    file = open(file_location, 'r')
     for line in file:
         __urls.append(line.strip())
     file.close()
@@ -20,7 +26,8 @@ def read_urls() -> list[str]:
 
 def read_result() -> dict:
     try:
-        file = open('result.txt', 'r')
+        file_location = os.path.join(script_dir, 'results.txt')
+        file = open(file_location, 'r')
     except FileNotFoundError:
         return {}
     data = json.load(file)
@@ -28,7 +35,8 @@ def read_result() -> dict:
 
 
 def save_result(data: dict):
-    file = open('result.txt', 'w')
+    file_location = os.path.join(script_dir, 'result.txt')
+    file = open(file_location, 'w')
     json.dump(data, file)
     file.close()
 
